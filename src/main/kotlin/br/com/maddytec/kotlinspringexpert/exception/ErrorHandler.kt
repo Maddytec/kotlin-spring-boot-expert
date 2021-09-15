@@ -13,7 +13,12 @@ import javax.servlet.http.HttpServletResponse
 class ErrorHandler {
 
     @ExceptionHandler(JsonParseException::class)
-    fun JsonFormatExceptionHandler(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, exception: Exception): ResponseEntity<ErrorMessage> {
+    fun jsonFormatExceptionHandler(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, exception: Exception): ResponseEntity<ErrorMessage> {
         return ResponseEntity(ErrorMessage("Json Error", exception.message ?: "Json invalido"), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(NotFoundExceptionHandler::class)
+    fun notFoundExceptionHandler(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, exception: Exception): ResponseEntity<ErrorMessage> {
+        return ResponseEntity(ErrorMessage("Não encontrado(a).", exception.message !!), HttpStatus.NOT_FOUND)
     }
 }

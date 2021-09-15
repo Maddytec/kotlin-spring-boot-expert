@@ -1,5 +1,6 @@
 package br.com.maddytec.kotlinspringexpert.controller
 
+import br.com.maddytec.kotlinspringexpert.exception.NotFoundExceptionHandler
 import br.com.maddytec.kotlinspringexpert.model.Promocao
 import br.com.maddytec.kotlinspringexpert.model.ResponseJson
 import br.com.maddytec.kotlinspringexpert.service.PromocaoService
@@ -47,11 +48,11 @@ class PromocaoController {
 
 
     @GetMapping("{id}")
-    fun getPromocao(@PathVariable id: Long): ResponseEntity<Promocao> {
-        var promocao = promocaoService.getPromocaoById(id)
-        var status = if( promocao == null) NOT_FOUND else OK
-        return ResponseEntity(promocao, status)
-
+    @ResponseStatus(OK)
+    fun getPromocao(@PathVariable id: Long): Promocao {
+        var promocao = promocaoService.getPromocaoById(id)?:
+        throw NotFoundExceptionHandler("Promoção ${id} não encontrada.")
+       return promocao
     }
 
     @PostMapping
@@ -62,23 +63,17 @@ class PromocaoController {
     }
 
     @PutMapping("/{id}")
-    fun atualizarPromocao(@PathVariable id: Long, @RequestBody promocao: Promocao): ResponseEntity<Nothing> {
-        if(promocaoService.getPromocaoById(id) != null) {
-            promocaoService.atualizarPromocao(id, promocao)
-            return ResponseEntity(null, ACCEPTED)
-        }
-        return ResponseEntity(null, NOT_FOUND)
-
+    @ResponseStatus(ACCEPTED)
+    fun atualizarPromocao(@PathVariable id: Long, @RequestBody promocao: Promocao) {
+        promocaoService.getPromocaoById(id) ?: throw NotFoundExceptionHandler("Promoção ${id} não encontrada.")
+        promocaoService.atualizarPromocao(id, promocao)
     }
 
 
     @DeleteMapping("/{id}")
-    fun removePromocao(@PathVariable id: Long): ResponseEntity<Nothing> {
-        if(promocaoService.getPromocaoById(id) != null) {
-            promocaoService.removePromocao(id)
-            return ResponseEntity(null, ACCEPTED)
-        }
-        return ResponseEntity(null, NOT_FOUND)
-
+    @ResponseStatus(ACCEPTED)
+    fun removePromocao(@PathVariable id: Long){
+       promocaoService.getPromocaoById(id) ?: throw NotFoundExceptionHandler("Promoção ${id} não encontrada.")
+       promocaoService.removePromocao(id)
     }
 }
