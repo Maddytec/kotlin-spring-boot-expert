@@ -1,10 +1,10 @@
 package br.com.maddytec.kotlinspringexpert.model
 
 data class Promocao(
-    val id: Long,
-    val descricao: String,
-    val local: String,
-    val isAllInclusive: Boolean,
-    val quantidadeDias: Int,
-    val preco: Double
+    var id: Long,
+    var descricao: String,
+    var local: String,
+    var isAllInclusive: Boolean,
+    var quantidadeDias: Int,
+    var preco: Double
     )
