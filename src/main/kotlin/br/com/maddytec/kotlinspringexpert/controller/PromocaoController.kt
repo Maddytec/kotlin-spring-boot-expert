@@ -1,12 +1,14 @@
 package br.com.maddytec.kotlinspringexpert.controller
 
 import br.com.maddytec.kotlinspringexpert.model.Promocao
+import br.com.maddytec.kotlinspringexpert.model.ResponseJson
 import br.com.maddytec.kotlinspringexpert.service.PromocaoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import org.springframework.web.bind.annotation.ResponseStatus as ResponseStatus
 
 @RestController
@@ -53,10 +55,10 @@ class PromocaoController {
     }
 
     @PostMapping
-    fun novaPromocao(@RequestBody promocao: Promocao): ResponseEntity<Map<String, Promocao>> {
+    fun novaPromocao(@RequestBody promocao: Promocao): ResponseEntity<ResponseJson> {
         promocaoService.novaPromocao(promocao)
-       var map = mapOf("promocao" to promocao)
-      return ResponseEntity.ok(map);
+       var responseJson = ResponseJson("OK", Date())
+      return ResponseEntity.ok(responseJson);
     }
 
     @PutMapping("/{id}")
