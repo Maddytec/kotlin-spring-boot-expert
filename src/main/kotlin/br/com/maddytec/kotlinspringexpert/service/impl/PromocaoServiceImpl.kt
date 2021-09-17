@@ -4,6 +4,7 @@ import br.com.maddytec.kotlinspringexpert.model.Promocao
 import br.com.maddytec.kotlinspringexpert.repository.PromocaoRepository
 import br.com.maddytec.kotlinspringexpert.service.PromocaoService
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,10 +12,10 @@ class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoS
 
     override fun novaPromocao(promocao: Promocao) = promocaoRepository.save(promocao)
 
-    override fun getPromocao() = promocaoRepository.findAll().toList()
+    override fun getPromocao() = promocaoRepository.findAll(Sort.by("local").descending()).toList()
 
     override fun getPromocaoPaginacao(page: Int, size: Int): List<Promocao> {
-        var page = PageRequest.of(page, size)
+        var page = PageRequest.of(page, size, Sort.by("descricao").ascending())
         return promocaoRepository.findAll(page).toList()
     }
 
