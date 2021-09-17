@@ -13,7 +13,7 @@ class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoS
 
     override fun getPromocao() = promocaoRepository.findAll().toList()
 
-    override fun getPromocaoById(id: Long) = promocaoRepository.findById(id).orElseGet(null)
+    override fun getPromocaoById(id: Long) = promocaoRepository.findById(id).orElse(null)
 
     override fun getPromocaoFiltro(local: String, descricao: String) = promocaoRepository.findAll().filter {
         it.local.contains(local, true) && it.descricao.contains(descricao, true) }
