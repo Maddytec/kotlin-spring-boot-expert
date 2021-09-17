@@ -3,8 +3,8 @@ package br.com.maddytec.kotlinspringexpert.service.impl
 import br.com.maddytec.kotlinspringexpert.model.Promocao
 import br.com.maddytec.kotlinspringexpert.repository.PromocaoRepository
 import br.com.maddytec.kotlinspringexpert.service.PromocaoService
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoService {
@@ -12,6 +12,11 @@ class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoS
     override fun novaPromocao(promocao: Promocao) = promocaoRepository.save(promocao)
 
     override fun getPromocao() = promocaoRepository.findAll().toList()
+
+    override fun getPromocaoPaginacao(page: Int, size: Int): List<Promocao> {
+        var page = PageRequest.of(page, size)
+        return promocaoRepository.findAll(page).toList()
+    }
 
     override fun getPromocaoById(id: Long) = promocaoRepository.findById(id).orElse(null)
 

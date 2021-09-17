@@ -8,6 +8,8 @@ interface PromocaoService {
 
     fun getPromocao(): List<Promocao>
 
+    fun getPromocaoPaginacao(page: Int, size: Int): List<Promocao>
+
     fun getPromocaoFiltro(local: String, descricao: String): List<Promocao>
 
     fun atualizarPromocao(id: Long, promocao: Promocao)

@@ -1,5 +1,6 @@
 package br.com.maddytec.kotlinspringexpert.controller
 
+import br.com.maddytec.kotlinspringexpert.exception.ErrorHandler
 import br.com.maddytec.kotlinspringexpert.exception.NotFoundExceptionHandler
 import br.com.maddytec.kotlinspringexpert.model.Promocao
 import br.com.maddytec.kotlinspringexpert.model.ResponseJson
@@ -32,7 +33,7 @@ class PromocaoController {
     }
 
     @GetMapping("/filtro")
-    fun getPromocaoPorLocal(
+    fun getPromocaoPorFiltro(
         @RequestParam(required = false, defaultValue = "") local: String,
         @RequestParam(required = false, defaultValue = "") descricao: String
     ): ResponseEntity<List<Promocao>> {
@@ -44,6 +45,21 @@ class PromocaoController {
         }
 
         return ResponseEntity(listaPromocao, OK)
+    }
+
+    @GetMapping("/paginacao")
+    fun getPromocaoPaginacao(
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam(required = false, defaultValue = "3") size: Int ): ResponseEntity<List<Promocao>> {
+
+        val listaPromocao = promocaoService.getPromocaoPaginacao(page, size)
+
+        if(listaPromocao == null || listaPromocao.isEmpty()){
+            return ResponseEntity(listaPromocao, NOT_FOUND)
+        }
+
+        return ResponseEntity(listaPromocao, OK)
+
     }
 
 
