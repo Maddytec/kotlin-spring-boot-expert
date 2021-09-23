@@ -3,6 +3,8 @@ package br.com.maddytec.kotlinspringexpert.service.impl
 import br.com.maddytec.kotlinspringexpert.model.Promocao
 import br.com.maddytec.kotlinspringexpert.repository.PromocaoRepository
 import br.com.maddytec.kotlinspringexpert.service.PromocaoService
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Service
 @Service
 class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoService {
 
+    @CacheEvict("promocoes", allEntries = true)
     override fun novaPromocao(promocao: Promocao) = promocaoRepository.save(promocao)
 
+    @Cacheable("promocoes")
     override fun getPromocao() = promocaoRepository.findAll(Sort.by("local").descending()).toList()
 
     override fun getPromocaoPaginacao(page: Int, size: Int): List<Promocao> {
@@ -24,11 +28,13 @@ class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoS
     override fun getPromocaoFiltro(local: String, descricao: String) = promocaoRepository.findAll().filter {
         it.local.contains(local, true) && it.descricao.contains(descricao, true) }
 
+    @CacheEvict("promocoes", allEntries = true)
     override fun atualizarPromocao(id: Long, promocao: Promocao) {
         promocao.id = id
         promocaoRepository.save(promocao)
     }
 
+    @CacheEvict("promocoes", allEntries = true)
     override fun removePromocao(id: Long) {
         promocaoRepository.deleteById(id)
     }
