@@ -32,4 +32,6 @@ class PromocaoServiceImpl(val promocaoRepository: PromocaoRepository): PromocaoS
     override fun removePromocao(id: Long) {
         promocaoRepository.deleteById(id)
     }
+
+    override fun findByPrecoAte(valor: Double) = promocaoRepository.findByPrecoAte(valor)
 }

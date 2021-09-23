@@ -32,6 +32,21 @@ class PromocaoController {
 
     }
 
+    @GetMapping("/valor/{valor}")
+    @ResponseStatus(OK)
+    fun findByPrecoAte(@PathVariable valor: Double): List<Promocao> {
+        var listaPromocao = promocaoService.findByPrecoAte(valor)
+
+        if(listaPromocao == null || listaPromocao.isEmpty()) {
+            throw NotFoundExceptionHandler("Promoção não encontrada com valor menor ou iguala ${valor}")
+        }
+
+        return listaPromocao
+
+    }
+
+
+
     @GetMapping("/filtro")
     fun getPromocaoPorFiltro(
         @RequestParam(required = false, defaultValue = "") local: String,

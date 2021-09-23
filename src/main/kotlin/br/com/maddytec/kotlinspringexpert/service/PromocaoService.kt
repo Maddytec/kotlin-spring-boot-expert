@@ -17,4 +17,6 @@ interface PromocaoService {
     fun removePromocao(id:Long)
 
     fun getPromocaoById(id: Long): Promocao?
+
+    fun findByPrecoAte(valor: Double): List<Promocao>
 }
